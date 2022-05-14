@@ -7,6 +7,8 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const tourRouter = require('./routes/tour-routes');
 const userRouter = require('./routes/user-routes');
+const reviewRouter = require('./routes/review-routes');
+
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 
@@ -69,6 +71,7 @@ app.use((req, res, next) => {
 //routes (Middlewares too)
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/reviews', reviewRouter);
 
 //This will run for all routes that weren't catched by middlewares before
 app.all('*', (req, res, next) => {
