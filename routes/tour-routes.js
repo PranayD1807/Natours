@@ -3,6 +3,8 @@ const express = require('express');
 const tourController = require('./../controllers/tourController');
 const router = express.Router(); //this is a middleware
 const authController = require('./../controllers/authController');
+const reviewController = require('./../controllers/reviewController');
+
 // router.param('id', tourController.checkId);
 
 router
@@ -35,4 +37,11 @@ router
     tourController.deleteTour
   );
 
+router
+  .route('/:tourId/reviews')
+  .post(
+    authController.protect,
+    authController.restrictTo('user'),
+    reviewController.createReview
+  );
 module.exports = router;

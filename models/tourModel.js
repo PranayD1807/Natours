@@ -116,7 +116,14 @@ const tourSchema = new mongoose.Schema(
 tourSchema.virtual('durationWeeks').get(function() {
   return this.duration / 7;
 });
-
+// virtual populate : must be populated on controller
+//foreign field : name of field that refs this model
+// localfield : name stored of that id in this model
+tourSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'tour',
+  localField: '_id'
+});
 //mongoose middleware || hook
 // DOCUMENT MIDDLEWARE: runs before the .save() and .create()
 tourSchema.pre('save', function(next) {
