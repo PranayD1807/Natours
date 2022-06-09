@@ -3,10 +3,12 @@ const express = require('express');
 const tourController = require('./../controllers/tourController');
 const router = express.Router(); //this is a middleware
 const authController = require('./../controllers/authController');
-const reviewController = require('./../controllers/reviewController');
+// const reviewController = require('./../controllers/reviewController');
+const reviewRouter = require('./../routes/review-routes');
 
 // router.param('id', tourController.checkId);
 
+router.use('/:tourId/reviews', reviewRouter); // mounting a router
 router
   .route('/top-5-cheap')
   .get(tourController.aliasTopTours, tourController.getAllTours);
@@ -37,11 +39,11 @@ router
     tourController.deleteTour
   );
 
-router
-  .route('/:tourId/reviews')
-  .post(
-    authController.protect,
-    authController.restrictTo('user'),
-    reviewController.createReview
-  );
+// router
+//   .route('/:tourId/reviews')
+//   .post(
+//     authController.protect,
+//     authController.restrictTo('user'),
+//     reviewController.createReview
+//   );
 module.exports = router;
