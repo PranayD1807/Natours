@@ -6,41 +6,38 @@ class APIFeatures {
 
   filter() {
     const queryObj = { ...this.queryString };
-
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
-    excludedFields.forEach(el => delete queryObj[el]); //this will remove all params from exclusdedFields in the query
+    excludedFields.forEach(el => delete queryObj[el]);
 
-    let queryStr = JSON.stringify(queryObj); // converting to string
-
+    // 1B) Advanced filtering
+    let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
-    //Here, b for to exact match words, and g for to replace all
 
     this.query = this.query.find(JSON.parse(queryStr));
-    // let query = Tour.find(JSON.parse(queryStr));
 
-    return this; //returns entire object
+    return this;
   }
 
   sort() {
     if (this.queryString.sort) {
       const sortBy = this.queryString.sort.split(',').join(' ');
       this.query = this.query.sort(sortBy);
-      //sort('price ratingsAverage')
     } else {
       this.query = this.query.sort('-createdAt');
     }
-    return this; //returns entire object
+
+    return this;
   }
 
   limitFields() {
     if (this.queryString.fields) {
       const fields = this.queryString.fields.split(',').join(' ');
       this.query = this.query.select(fields);
-      // this.query = this.query.select('name duration price')
     } else {
-      this.query = this.query.select('-__v'); //here - means exclude
+      this.query = this.query.select('-__v');
     }
-    return this; //returns entire object
+
+    return this;
   }
 
   paginate() {
@@ -48,11 +45,9 @@ class APIFeatures {
     const limit = this.queryString.limit * 1 || 100;
     const skip = (page - 1) * limit;
 
-    // page=3&limit=10, 1-10 page 1, 11-20 page 2 ....
     this.query = this.query.skip(skip).limit(limit);
 
     return this;
   }
 }
-
 module.exports = APIFeatures;
